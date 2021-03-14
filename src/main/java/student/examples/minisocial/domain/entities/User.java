@@ -1,6 +1,6 @@
-package student.example.minisocial.domain.entities;
+package student.examples.minisocial.domain.entities;
 
-import student.example.minisocial.domain.entities.interfaces.IsCommentable;
+import student.examples.minisocial.domain.entities.interfaces.IsCommentable;
 import javax.persistence.*;
 
 @Entity(name="Profile")
