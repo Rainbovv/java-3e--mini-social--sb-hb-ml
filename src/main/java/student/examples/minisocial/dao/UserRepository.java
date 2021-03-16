@@ -1,15 +1,9 @@
 package student.examples.minisocial.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import student.examples.minisocial.domain.entities.User;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Repository
-public class UserRepository {
-
-	public List<User> getUsersList() {
-		return new ArrayList<>();
-	}
+public interface UserRepository extends JpaRepository<User, Integer> {
 }
