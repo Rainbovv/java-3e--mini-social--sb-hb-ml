@@ -68,6 +68,8 @@ public class User implements IsCommentable {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", nickName='" + nickName + '\'' + ", password='" + password + '\'' + ", email='" + email + '\'' + ", avatar='" + avatar + '\'' + '}';
+        return "User{" + "id=" + id + ", nickName='" + nickName +
+                '\'' + ", password='" + password + '\'' + ", email='"
+                + email + '\'' + ", avatar='" + avatar + '\'' + '}';
     }
 }
