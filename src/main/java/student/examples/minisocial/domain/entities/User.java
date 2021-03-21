@@ -7,10 +7,13 @@ import javax.persistence.*;
 public class User implements IsCommentable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(unique = true, length = 25)
     private String nickName;
+    @Column(length = 25)
     private String password;
+    @Column(unique = true, length = 50)
     private String email;
     private String avatar;
 
@@ -32,6 +35,10 @@ public class User implements IsCommentable {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNickName() {
