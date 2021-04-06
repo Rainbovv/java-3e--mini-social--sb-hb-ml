@@ -41,4 +41,14 @@ public class UserController {
 		userService.updateUser(id, user);
 		return "User with id=" + id + " updated!";
 	}
+	
+	
+	// FRIENDSHIP ROUTES
+	@GetMapping("/users/{id}/friends")
+	public List<User>  indexFriends(@PathVariable int id) {
+		
+		 return userService.getUsersFriendsList(id);
+	}
+	
+	
 }

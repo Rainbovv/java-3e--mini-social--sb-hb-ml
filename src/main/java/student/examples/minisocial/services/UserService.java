@@ -6,6 +6,7 @@ import student.examples.minisocial.dao.UserRepository;
 import student.examples.minisocial.domain.entities.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -40,5 +41,15 @@ public class UserService {
 		userRepository.deleteById(id);
 		user.setId(id);
 		userRepository.save(user);
+	}
+
+	public List<User> getUsersFriendsList(int id) {
+		Optional<User> userResult = userRepository.findById(id);
+		
+		if(userResult.isPresent()) {
+			return userResult.get().getFriendTo();
+		}
+		
+		return null;
 	}
 }

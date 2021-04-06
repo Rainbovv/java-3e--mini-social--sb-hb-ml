@@ -1,6 +1,10 @@
 package student.examples.minisocial.domain.entities;
 
 import student.examples.minisocial.domain.entities.interfaces.IsCommentable;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity(name="Profile")
@@ -17,6 +21,21 @@ public class User implements IsCommentable {
     private String email;
     private String avatar;
 
+//    RELATIONSHIPS / ASSOCIATIONS
+    
+    
+    // friendship, follow, block, ... - same principle !!!
+    
+    // friends that THIS USER ADDED !!! - direct
+    @ManyToMany()
+    private List<User> friendTo = new ArrayList<>();
+    
+    // riends that added this user !!! - reverse - virtual
+//    @ManyToMany(mappedBy = "friendTo")
+//    private List<User> friendOf = new ArrayList<>();
+    
+    
+    
     public User() {}
 
     public User(String nickName, String password, String email) {
@@ -79,4 +98,68 @@ public class User implements IsCommentable {
                 '\'' + ", password='" + password + '\'' + ", email='"
                 + email + '\'' + ", avatar='" + avatar + '\'' + '}';
     }
+
+	public List<User> getFriendTo() {
+		return friendTo;
+	}
+
+	public void setFriendTo(List<User> friendTo) {
+		this.friendTo = friendTo;
+	}
+
+//	public List<User> getFriendOf() {
+//		return friendOf;
+//	}
+//
+//	public void setFriendOf(List<User> friendOf) {
+//		this.friendOf = friendOf;
+//	}
 }
+
+
+
+
+/*
+profile
+   ( id .... nick_name .... ) 
+     1 ....  User1
+     2 ....  User2
+     3 ....  User3
+     4 ....  User4
+     5 ....  User5
+ 
+ 
+profile_friend_to
+   ( profile_of_id  profile_to_id )
+  	  1      ->      2
+  	  1      ->      3
+  	  
+  	  
+
+User2  ->  reverse  ->  User1 -> direct -> User2 .... 	  
+  	  
+  	  
+  	  
+  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
