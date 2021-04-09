@@ -20,23 +20,12 @@ public class User implements IsCommentable {
     @Column(unique = true, length = 50)
     private String email;
     private String avatar;
-
-//    RELATIONSHIPS / ASSOCIATIONS
-    
-    
-    // friendship, follow, block, ... - same principle !!!
-    
-    // friends that THIS USER ADDED !!! - direct
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<User> friendTo = new ArrayList<>();
-    
-    // riends that added this user !!! - reverse - virtual
-//    @ManyToMany(mappedBy = "friendTo")
-//    private List<User> friendOf = new ArrayList<>();
-    
-    
-    
-    public User() {}
+
+
+    public User() {
+    }
 
     public User(String nickName, String password, String email) {
         this.nickName = nickName;
@@ -92,55 +81,29 @@ public class User implements IsCommentable {
         this.avatar = avatar;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", nickName='" + nickName +
-                '\'' + ", password='" + password + '\'' + ", email='"
-                + email + '\'' + ", avatar='" + avatar + '\'' + '}';
+    public List<User> getFriendTo() {
+        return friendTo;
     }
 
-	public List<User> getFriendTo() {
-		return friendTo;
-	}
+    public void setFriendTo(List<User> friendTo) {
+        this.friendTo = friendTo;
+    }
 
-	public void setFriendTo(List<User> friendTo) {
-		this.friendTo = friendTo;
-	}
+    public void addFriend(User user) {
+        this.friendTo.add(user);
+    }
 
-//	public List<User> getFriendOf() {
-//		return friendOf;
-//	}
-//
-//	public void setFriendOf(List<User> friendOf) {
-//		this.friendOf = friendOf;
-//	}
+    public void removeFriend(User user) {
+        this.friendTo.remove(user);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", nickName='" + nickName + '\''
+                + ", password='" + password + '\'' + ", email='" + email + '\'' +
+                ", avatar='" + avatar + '\'' + '}';
+    }
 }
-
-
-
-
-/*
-profile
-   ( id .... nick_name .... ) 
-     1 ....  User1
-     2 ....  User2
-     3 ....  User3
-     4 ....  User4
-     5 ....  User5
- 
- 
-profile_friend_to
-   ( profile_of_id  profile_to_id )
-  	  1      ->      2
-  	  1      ->      3
-  	  
-  	  
-
-User2  ->  reverse  ->  User1 -> direct -> User2 .... 	  
-  	  
-  	  
-  	  
-  */
 
 
 

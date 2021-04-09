@@ -6,7 +6,6 @@ import student.examples.minisocial.dao.UserRepository;
 import student.examples.minisocial.domain.entities.User;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -19,14 +18,7 @@ public class UserService {
 	}
 
 	public User getUserById(int id) {
-
-		var ref = new Object() {
-			User user = null;
-		};
-
-		userRepository.findById(id).ifPresent(value -> ref.user = value);
-
-		return ref.user;
+		return userRepository.findById(id).orElse(null);
 	}
 
 	public void deleteUserById(int id) {
@@ -44,12 +36,59 @@ public class UserService {
 	}
 
 	public List<User> getUsersFriendsList(int id) {
-		Optional<User> userResult = userRepository.findById(id);
-		
-		if(userResult.isPresent()) {
-			return userResult.get().getFriendTo();
+		return userRepository.findById(id)
+				.map(User::getFriendTo).orElse(null);
+	}
+
+
+	public void addUserFriend(User user, User friend) {
+		user.addFriend(friend);
+		userRepository.save(user);
+	}
+
+	public void removeUserFriend(User user, User friend) {
+		user.removeFriend(friend);
+		userRepository.save(user);
+	}
+
+	public String checkFriends(int id, int friendId, Operation operation) {
+		if (id == friendId)
+			return "The user and friend id cannot be identical!";
+
+		User user = getUserById(id);
+		User friend = getUserById(friendId);
+
+		if (user == null) return "No user with such id - " + id;
+		if (friend == null) return "No friend with such id - " + friendId;
+
+		return proceedWithOperation(user, friend, operation);
+	}
+
+	private String proceedWithOperation(User user, User friend, Operation operation) {
+		boolean areFriends = user.getFriendTo().contains(friend);
+
+		switch (operation) {
+			case ADD:
+				if (areFriends)
+					return "Users are friends already!";
+
+				addUserFriend(user,friend);
+				return "Users " + user.getId() + " and " +
+						friend.getId() + " have become friends";
+			case REMOVE:
+				if (!areFriends)
+					return "Users are not friends!";
+
+				removeUserFriend(user, friend);
+				return "Users " + user.getId() + " and " +
+						friend.getId() + " are no more friends";
+			default:
+				return "No such operation";
 		}
-		
-		return null;
+	}
+
+	public enum Operation {
+		REMOVE,
+		ADD
 	}
 }

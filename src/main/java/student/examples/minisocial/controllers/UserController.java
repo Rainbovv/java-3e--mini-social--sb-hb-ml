@@ -41,14 +41,25 @@ public class UserController {
 		userService.updateUser(id, user);
 		return "User with id=" + id + " updated!";
 	}
-	
-	
+
 	// FRIENDSHIP ROUTES
 	@GetMapping("/users/{id}/friends")
-	public List<User>  indexFriends(@PathVariable int id) {
+	public List<User> indexFriends(@PathVariable int id) {
 		
 		 return userService.getUsersFriendsList(id);
 	}
-	
-	
+
+	@GetMapping("/users/{id}/friends/add/{friend_id}")
+	public String addUserFriend(@PathVariable int id, @PathVariable int friend_id) {
+
+		return userService.checkFriends(id, friend_id, UserService.Operation.ADD);
+	}
+
+	@GetMapping("/users/{id}/friends/remove/{friend_id}")
+	public String removeUserFriend(@PathVariable int id, @PathVariable int friend_id) {
+
+		return userService.checkFriends(id, friend_id, UserService.Operation.REMOVE);
+	}
+
+
 }
